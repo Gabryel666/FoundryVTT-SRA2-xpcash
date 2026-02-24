@@ -10,9 +10,12 @@
   },
   "authors": [
     {
-      "name": "Foundry Module Developer"
+      "name": "Gabryel"
     }
   ],
+  "url": "https://github.com/Gabryel666/FoundryVTT-SRA2-xpcash",
+  "manifest": "https://raw.githubusercontent.com/Gabryel666/FoundryVTT-SRA2-xpcash/main/module.json",
+  "download": "https://github.com/Gabryel666/FoundryVTT-SRA2-xpcash/releases/latest/download/module.zip",
   "esmodules": [
     "scripts/init.js"
   ],
