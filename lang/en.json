@@ -1,0 +1,43 @@
+{
+    "SRA2XPCash": {
+        "Settings": {
+            "EnableItemCashCost": {
+                "Name": "Enable Cash Cost on Items",
+                "Hint": "Master toggle for enabling the 'Cash' field on Item sheets."
+            },
+            "CashCostEquipment": {
+                "Name": "Enable Cash Cost for Equipment",
+                "Hint": ""
+            },
+            "CashCostWeapon": {
+                "Name": "Enable Cash Cost for Weapons",
+                "Hint": ""
+            },
+            "CashCostArmor": {
+                "Name": "Enable Cash Cost for Armor",
+                "Hint": ""
+            },
+            "CashCostCyberware": {
+                "Name": "Enable Cash Cost for Cyberware",
+                "Hint": ""
+            },
+            "CashCostCyberdeck": {
+                "Name": "Enable Cash Cost for Cyberdecks",
+                "Hint": ""
+            },
+            "CashCostVehicle": {
+                "Name": "Enable Cash Cost for Vehicles",
+                "Hint": ""
+            }
+        },
+        "UI": {
+            "XP": "XP",
+            "Cash": "Cash",
+            "ItemCashCostLabel": "Cost in Cash",
+            "DeductCashTitle": "Purchase Item",
+            "DeductCashPrompt": "Do you want to deduct the price of this item ({cost} Cash) from your cash pool?",
+            "CashDeducted": "Deducted {cost} Cash for purchase.",
+            "TotalXPTooltip": "Total Character XP Build Cost"
+        }
+    }
+}

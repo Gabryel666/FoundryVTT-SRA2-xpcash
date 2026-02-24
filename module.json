@@ -1,0 +1,34 @@
+{
+  "id": "sra2-xp-cash",
+  "title": "SRA2: XP & Cash Economy",
+  "description": "Separates Nuyens into XP and Cash for the Shadowrun Anarchy 2 system.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12",
+    "maximum": "13"
+  },
+  "authors": [
+    {
+      "name": "Foundry Module Developer"
+    }
+  ],
+  "esmodules": [
+    "scripts/init.js"
+  ],
+  "styles": [
+    "styles/module.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ]
+}

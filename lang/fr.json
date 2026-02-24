@@ -1,0 +1,43 @@
+{
+    "SRA2XPCash": {
+        "Settings": {
+            "EnableItemCashCost": {
+                "Name": "Activer le coût en Cash global",
+                "Hint": "Si activé, le 'Cash' sera utilisable sur les objets."
+            },
+            "CashCostEquipment": {
+                "Name": "Coût en Cash pour les Équipements",
+                "Hint": ""
+            },
+            "CashCostWeapon": {
+                "Name": "Coût en Cash pour les Armes",
+                "Hint": ""
+            },
+            "CashCostArmor": {
+                "Name": "Coût en Cash pour les Armures",
+                "Hint": ""
+            },
+            "CashCostCyberware": {
+                "Name": "Coût en Cash pour le Cyberware",
+                "Hint": ""
+            },
+            "CashCostCyberdeck": {
+                "Name": "Coût en Cash pour les Cyberdecks",
+                "Hint": ""
+            },
+            "CashCostVehicle": {
+                "Name": "Coût en Cash pour les Véhicules / Drones",
+                "Hint": ""
+            }
+        },
+        "UI": {
+            "XP": "XP",
+            "Cash": "Cash",
+            "ItemCashCostLabel": "Coût en Cash",
+            "DeductCashTitle": "Achat d'objet",
+            "DeductCashPrompt": "Voulez-vous déduire le prix de cet atout ({cost} Cash) de vos fonds ?",
+            "CashDeducted": "Débité de {cost} Cash pour l'achat.",
+            "TotalXPTooltip": "Coût Total Cumulé du Personnage (XP)"
+        }
+    }
+}
