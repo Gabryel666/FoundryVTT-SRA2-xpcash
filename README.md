@@ -1,4 +1,4 @@
-# SRA2: XP & Cash Economy
+# SRA2 : XP & Cash Economy
 
 A Foundry VTT module specifically designed for the **Shadowrun Anarchy 2 (SRA2)** system. This module overhauls the default economy by separating Character Advancement (XP) from Monetary Wealth (Cash).
 
@@ -40,3 +40,4 @@ Un module Foundry VTT spécialement conçu pour le système **Shadowrun Anarchy 
 1. Copiez le dossier du module `sra2-xp-cash` dans votre répertoire Foundry `Data/modules/`.
 2. Lancez Foundry VTT, allez dans votre Monde, et activez le module **SRA2: XP & Cash Economy**.
 3. Configurez les types d'objets souhaités dans la Configuration du Module.
+
