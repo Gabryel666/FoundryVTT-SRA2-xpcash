@@ -14,29 +14,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Inject Version into module.json
+      - name: Update module.json Version and Download URL
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
+          # Update version
           sed -i 's/"version": ".*"/"version": "'$VERSION'"/' module.json
+          # Update download url to point to this exact release tag
+          sed -i 's|"download": ".*"|"download": "https://github.com/${{ github.repository }}/releases/download/'${GITHUB_REF_NAME}'/module.zip"|' module.json
+          # Update manifest url to point to this exact release tag's module.json
+          sed -i 's|"manifest": ".*"|"manifest": "https://github.com/${{ github.repository }}/releases/download/'${GITHUB_REF_NAME}'/module.json"|' module.json
 
       - name: Commit version bump to main
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add module.json
-          git commit -m "Auto-update version to ${GITHUB_REF_NAME#v}" || echo "No changes to commit"
+          git commit -m "Auto-update version and URLs to ${GITHUB_REF_NAME}" || echo "No changes to commit"
           git push origin HEAD:main
 
       - name: Create Module Zip
         run: |
           zip -r ./module.zip . -x "*.git*" "*.github*" ".gitignore" "README.md" "LICENSE"
 
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            module.json
-            module.zip
+      - name: Upload Release Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ github.ref_name }} module.zip module.json --clobber
