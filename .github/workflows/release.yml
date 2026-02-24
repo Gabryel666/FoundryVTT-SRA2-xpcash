@@ -1,9 +1,8 @@
 name: Release Creation
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -14,23 +13,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Update module.json Version and Download URL
+      - name: Inject Version into module.json
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          # Update version
+          VERSION="${{ github.event.release.tag_name }}"
+          VERSION="${VERSION#v}"
           sed -i 's/"version": ".*"/"version": "'$VERSION'"/' module.json
-          # Update download url to point to this exact release tag
-          sed -i 's|"download": ".*"|"download": "https://github.com/${{ github.repository }}/releases/download/'${GITHUB_REF_NAME}'/module.zip"|' module.json
-          # Update manifest url to point to this exact release tag's module.json
-          sed -i 's|"manifest": ".*"|"manifest": "https://github.com/${{ github.repository }}/releases/download/'${GITHUB_REF_NAME}'/module.json"|' module.json
 
       - name: Commit version bump to main
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add module.json
-          git commit -m "Auto-update version and URLs to ${GITHUB_REF_NAME}" || echo "No changes to commit"
+          git commit -m "Auto-update version to ${{ github.event.release.tag_name }}" || echo "No changes to commit"
+          # fetch et rebase pour éviter les conflits si des commits ont été poussés entre temps
+          git fetch origin main
+          git rebase origin/main
           git push origin HEAD:main
+
+      - name: Update Download URL for Release Asset
+        run: |
+          # The release asset module.json gets a specific download URL so historical versions can be installed
+          sed -i 's|"download": ".*"|"download": "https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.zip"|' module.json
 
       - name: Create Module Zip
         run: |
@@ -40,4 +43,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload ${{ github.ref_name }} module.zip module.json --clobber
+          gh release upload ${{ github.event.release.tag_name }} module.zip module.json --clobber
