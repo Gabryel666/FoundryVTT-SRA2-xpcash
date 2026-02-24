@@ -37,7 +37,11 @@ jobs:
 
       - name: Create Module Zip
         run: |
-          zip -r ./module.zip . -x "*.git*" "*.github*" ".gitignore" "README.md" "LICENSE"
+          mkdir /tmp/sra2-xp-cash
+          rsync -a . /tmp/sra2-xp-cash/ --exclude .git --exclude .github --exclude .gitignore
+          cd /tmp
+          zip -r $GITHUB_WORKSPACE/module.zip sra2-xp-cash/
+          cd $GITHUB_WORKSPACE
 
       - name: Upload Release Assets
         env:
