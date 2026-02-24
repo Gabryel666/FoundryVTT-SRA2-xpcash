@@ -4,11 +4,11 @@
   "description": "Separates Nuyens into XP and Cash for the Shadowrun Anarchy 2 system.",
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
-  "version": "1.4.1",
+  "version": "1.4.2",
 =======
 =======
 >>>>>>> Stashed changes
-  "version": "1.4.1",
+  "version": "1.4.2",
   "compatibility": {
     "minimum": 11,
     "verified": 13
