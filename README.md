@@ -24,13 +24,13 @@ A Foundry VTT module specifically designed for the **Shadowrun Anarchy 2 (SRA2)*
 
 # SRA2 : Économie XP & Cash (Français)
 
-Un module Foundry VTT spécialement conçu pour le système **Shadowrun Anarchy 2 (SRA2)**. Ce module refond l'économie par défaut en séparant la Progression du Personnage (XP) de la Richesse Monétaire (Cash).
+Un module Foundry VTT spécialement conçu pour le système **Shadowrun Anarchy 2 (SRA2)**. Ce module refond l'économie par défaut en séparant la Progression du Personnage (XP) de l'argent (Cash).
 
 ## 🌟 Fonctionnalités
 
 *   **Monnaies Distinctes** : Remplace les occurrences génériques "Nuyens / ¥" sur la feuille de personnage par "XP" pour les points de construction, tout en injectant un champ "Cash" dédié.
-*   **Double Réserve Modifiable** : Dans le coin inférieur droit de la fiche de perso, vous avez désormais deux champs éditables côte à côte : vos **XP Libres** (dépensables) et votre **Cash** disponible. Le coût total cumulé de votre personnage est astucieusement caché mais visible dans une infobulle au survol du mot "XP".
-*   **Véritable Système à Coût Zéro** : Les objets achetés avec du Cash sont nativement forcés en `équipement gratuit` dans la base de données SRA2 lors de leur création. Cela maintient la logique mathématique des XP totaux de votre personnage parfaitement propre, sans bidouillage visuel !
+*   **Double Réserve Modifiable** : Dans le coin inférieur droit de la fiche de perso, vous avez désormais deux champs éditables côte à côte : vos **XP** (dépensables) et votre **Cash** disponible. Le coût total cumulé de votre personnage est caché mais visible dans une infobulle au survol du mot "XP".
+*   **Véritable Système à Coût Zéro** : Les objets achetés avec du Cash sont nativement forcés en `équipement gratuit` dans la base de données SRA2 lors de leur création. Cela maintient la logique mathématique des XP totaux de votre personnage parfaitement propre, sans bricolage visuel.
 *   **Achats Automatisés** : Glisser-déposer un objet payant en Cash sur la fiche d'un personnage déclenche une boîte de dialogue de confirmation. Si acceptée, le coût de l'objet est automatiquement déduit des réserves de Cash du personnage.
 *   **Paramètres Modulaires** : Personnalisez précisément quels types d'objets utilisent le Cash au lieu de l'XP via les paramètres du module (Équipement, Armes, Cyberware, Véhicules, Armures, Cyberdecks).
 *   **Entièrement Localisé** : Prise en charge de l'Anglais et du Français intégrée.
@@ -40,4 +40,5 @@ Un module Foundry VTT spécialement conçu pour le système **Shadowrun Anarchy 
 1. Copiez le dossier du module `sra2-xp-cash` dans votre répertoire Foundry `Data/modules/`.
 2. Lancez Foundry VTT, allez dans votre Monde, et activez le module **SRA2: XP & Cash Economy**.
 3. Configurez les types d'objets souhaités dans la Configuration du Module.
+
 
