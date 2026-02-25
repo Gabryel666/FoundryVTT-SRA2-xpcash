@@ -2,10 +2,10 @@
   "id": "sra2-xp-cash",
   "title": "SRA2: XP & Cash Economy",
   "description": "Separates Nuyens into XP and Cash for the Shadowrun Anarchy 2 system.",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "compatibility": {
-    "minimum": 11,
-    "verified": 13
+    "minimum": "11",
+    "verified": "13"
   },
   "authors": [
     {
@@ -25,9 +25,6 @@
   "download": "https://github.com/Gabryel666/FoundryVTT-SRA2-xpcash/releases/latest/download/sra2-xp-cash.zip",
   "esmodules": [
     "scripts/init.js"
-  ],
-  "styles": [
-    "styles/module.css"
   ],
   "languages": [
     {
