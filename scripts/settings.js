@@ -22,6 +22,27 @@ export function registerSettings() {
             default: true
         });
     });
+
+    // Sound settings
+    game.settings.register('sra2-xp-cash', 'sheetOpenSound', {
+        name: 'SRA2XPCash.Settings.SheetOpenSound.Name',
+        hint: 'SRA2XPCash.Settings.SheetOpenSound.Hint',
+        scope: 'world',
+        config: true,
+        type: String,
+        default: '',
+        filePicker: 'audio'
+    });
+
+    game.settings.register('sra2-xp-cash', 'sheetCloseSound', {
+        name: 'SRA2XPCash.Settings.SheetCloseSound.Name',
+        hint: 'SRA2XPCash.Settings.SheetCloseSound.Hint',
+        scope: 'world',
+        config: true,
+        type: String,
+        default: '',
+        filePicker: 'audio'
+    });
 }
 
 export function isItemCashEnabled(featType) {

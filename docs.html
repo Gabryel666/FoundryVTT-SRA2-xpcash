@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    
+    
+
+    
+    <meta charset="UTF-8">
+    <title>Introduction to Module Development | Foundry Virtual Tabletop</title>
+    <meta name="description" content="The official website and community for Foundry Virtual Tabletop.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    
+    <link rel="icon" type="image/png" href="https://r2.foundryvtt.com/website-static-public/assets/icons/fvtt.png" sizes="512x512">
+    <link rel="shortcut icon" type="image/png" href="https://r2.foundryvtt.com/website-static-public/assets/icons/fvtt.ico"/>
+
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://r2.foundryvtt.com/website-static-public/fonts/fontawesome-6/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://r2.foundryvtt.com/website-static-public/css/darcula.css">
+    
+    <link rel="stylesheet" href="https://r2.foundryvtt.com/website-static-public/css/foundry.css">
+    
+
+    
+    
+    <script src="https://r2.foundryvtt.com/website-static-public/js/foundry.js"></script>
+    
+    <script src="https://r2.foundryvtt.com/website-static-public/js/highlight.js"></script>
+    
+    
+    <script type="module" src="https://r2.foundryvtt.com/website-static-public/js/foundry.mjs"></script>
+    
+    
+
+    
+    
+</head>
+
+<body  class="article flexcol">
+    <header class="body-container" id="main-header">
+        
+<nav id="main-menu" class="flexrow">
+
+    
+    <label for="navigation-toggle" class="dropdown-toggle"><i class="fa-solid fa-bars"></i></label>
+
+
+
+    <input id="navigation-toggle" name="menu-toggle" class="dropdown-trigger" type="checkbox">
+
+    
+    <div id="navigation-links" class="dropdown">
+        <a href="/" title="Home"><i class="fas fa-home"></i>Home</a>
+        
+        <a href="/purchase/" title="Purchase Foundry Virtual Tabletop"><i class="fas fa-shopping-cart"></i>Purchase</a>
+        <a href="https://www.foundryvtt.store" title="Marketplace"><i class="fas fa-shopping-bag"></i> Official Marketplace</a>
+        <a href="https://demo.foundryvtt.com" title="Web Demo"><i class="fas fa-desktop"></i>Web Demo</a>
+        <a href="/search/" title="Search"><i class="fas fa-magnifying-glass"></i>Search</a>
+        <a href="/releases/" title="Releases"><i class="fas fa-feather-alt"></i>Release Notes</a>
+        <a href="/kb/" title="Knowledge Base"><i class="fas fa-book-open"></i>Knowledge Base</a>
+        <a href="/packages/" title="Systems and Modules"><i class="fas fa-cogs"></i>Systems and Modules</a>
+        <a href="/api" title="API Documentation"><i class="fas fa-laptop-code"></i>API Documentation</a>
+        <a href="/ember/" title="Ember"><i class="fa-solid fa-fire-flame"></i>Ember</a>
+        <a href="/merch/" title="Merch"><i class="fas fa-store"></i>Merch</a>
+    </div>
+</nav>
+
+
+
+
+<form id="login-form" class="login-login flexrow"
+      method="post" action="/auth/login/">
+    <input type="hidden" name="csrfmiddlewaretoken" value="B3lkjYDehoZU9uGlIxJdGKSef2TChIMsRU3qzeEOij2b3BoD8gb4xR4RdvC97V1y">
+    <input type="hidden" value="/article/module-development/" name="next">
+
+
+
+    <a id="login-download" title="Download Software - Login Required!" disabled><i class="fa-solid fa-download" inert></i></a>
+    <a class="button" id="register" href="/auth/register/" title="Register Account"><i class="fa-solid fa-user-plus"></i> Register</a>
+
+    <label for="login-toggle" class="dropdown-toggle"><i class="fa-solid fa-circle-user"></i></label>
+    <input type="checkbox" id="login-toggle" class="dropdown-trigger">
+
+    <div id="login" class="dropdown" role="dialog">
+        <p>Please enter your username and password.</p>
+        <label class="username" for="username">
+            <input id="username" type="text" class="dark" placeholder="Username" name="username" required>
+        </label>
+        <label class="password" for="login-password">
+            <input id="password" type="password" class="dark" placeholder="Password" name="password" required>
+        </label>
+        <p>Do you need to <a href="/auth/reset-password/" title="Reset Lost Password">reset your password</a>?</p>
+        <button type="submit" class="bright" name="login">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>Log In
+        </button>
+    </div>
+
+</form>
+
+
+        
+        
+    </header>
+    <!-- Background Image -->
+    <div id="background-top" class="background-image" ></div>
+
+    <!-- Begin Main Content Section -->
+    <main class="body-container flexcol" id="main-content">
+
+        <!-- Banner messages -->
+        <div id="banner-messages">
+
+            
+            <noscript>
+                <p class="notification warning permanent">Your web browser has JavaScript disabled which is required in order to properly use the foundryvtt.com website. Certain website features will be disabled or will not work as expected unless JavaScript is enabled.</p>
+            </noscript>
+
+            
+            
+            <form class="dialog-prompt" id="analytics-prompt" method="post" action="/auth/_analytics/">
+    <input type="hidden" name="csrfmiddlewaretoken" value="B3lkjYDehoZU9uGlIxJdGKSef2TChIMsRU3qzeEOij2b3BoD8gb4xR4RdvC97V1y">
+    <input type="hidden" name="redirect" value="/article/module-development/">
+    
+        <p>This website collects anonymous data about how users interact with our website. This data provides us with 
+        valuable insights that help us to improve our products. Some of these analytics features are non-essential 
+        and use browser cookies.</p>
+        <p>What data we collect and information on how it is used is described in our 
+        <a href="/article/privacy-policy/" title="Privacy Policy" target="_blank">Privacy Policy</a>.
+        </p>
+        
+    <footer class="buttons flexrow">
+        <button type="submit" class="bright" name="yes">
+            <i class="fas fa-check"></i> Accept All Cookies
+        </button>
+        <button type="submit" class="bright" name="no">
+            <i class="fas fa-times"></i> Required Only
+        </button>
+    </footer>
+</form>
+
+            
+
+            
+            
+        </div>
+
+        <!-- Primary Content -->
+        
+<h1 id="site-title">Introduction to Module Development</h1>
+<h2 id="site-subtitle"></h2>
+
+<article id="article-32" class="primary-content">
+    <h2>Overview</h2>
+<p>This page provides an overview of the basic steps required to create a <strong>Module</strong> which can be activated to extend and modify the behavior of Foundry Virtual Tabletop and its game systems. At a conceptual level, think of each Module as a "plug-in" or "add-on" which changes the software behavior in small (or large) ways. Modules can alter the behavior of the core software in several different ways:</p>
+<dl>
+<dt>Content</dt>
+<dd>Modules which add data in the form of compendium packs of Adventures, Actors, Items, Scenes, Journal Entries, Roll Tables, or Playlists.</dd>
+<dt>Interface</dt>
+<dd>Modules which change the way the UI looks or behaves, changing the aesthetics and user experience of the software.</dd>
+<dt>Functionality</dt>
+<dd>Modules which add entirely new functionalities or features which do not exist in the base software, or modules which change the behavior of core features so they behave differently.</dd>
+<dt>Translation</dt>
+<dd>Modules which add support for translation of text displayed in Foundry VTT into other languages.</dd>
+</dl>
+<p>Each module could include one or more of these types of modifications, and users can mix-and-match multiple modules (provided they are compatible) to achieve a high degree of customization for their Foundry VTT experience. This page goes into detail about how module development works for developers who are interested in creating their own module content.</p>
+<h2 class="border" id="structure">Module File Structure</h2>
+<p>A <strong>Module</strong> is defined as a uniquely-named subfolder folder within <code>{userData}/Data/modules</code> which contains a <strong>manifest</strong> file in JSON format named <code>module.json</code> which defines the module and describes what features it contains. For the purpose of this example, let's create a module named <code>dice-tray</code>. The first step of your module development should be to define the manifest file and ensure that your module is recognized as valid by the Foundry VTT software.</p>
+<p>The bare minimum in order for a module to be recognized by Foundry VTT is a file structure that looks like this:</p>
+<pre><code class="language-plaintext">{userData}/Data/modules/
+  dice-tray/
+    module.json
+</code></pre>
+<p>In addition to this minimum requirement, you are free to choose the structure of content included inside your module folder - but we recommend adhering to the following boilerplate directory structure with named directories for <code>templates</code> containing HTML templates, <code>scripts</code> containing JavaScript code, <code>styles</code> containing CSS stylesheets, <code>packs</code> containing included Compendium content, and <code>lang</code> containing localization and translation files.</p>
+<pre><code class="language-plaintext">{userData}/Data/modules/
+  dice-tray/
+    module.json
+    templates/
+    scripts/
+    styles/
+    packs/
+    lang/
+</code></pre>
+<p>As an example of a complete module which includes many different features, imagine that our example module named <code>dice-tray</code> provides a new UI element for rolling dice inside the VTT. The file structure for such a module might look something like this:</p>
+<pre><code class="language-plaintext">{userData}/Data/modules/
+  dice-tray/
+    module.json
+    artwork/
+      d4-icon.png
+      d6-icon.png
+      d8-icon.png
+      d10-icon.png
+      d12-icon.png
+      d20-icon.png
+    templates/
+      dice-roller.html
+    scripts/
+      roller.js
+    styles/
+      roller.css
+    packs/
+      rolltables
+    lang/
+      en.json
+</code></pre>
+<p>Remember, apart from the <code>module.json</code> file, you are free to organize your module however you like. These are simply recommendations.</p>
+<h2 class="border" id="manifest">The Module Manifest</h2>
+<p>Each module must include a <code>module.json</code> file which defines the module and specifies what content it includes. This file is required and must be included at the root level of your module folder. The <code>"id"</code> attribute in the manifest file must match exactly with the name of the module folder. The manifest file is a JSON document containing an object of keys and values. A very minimal example of a valid <code>module.json</code> file is the following:</p>
+<pre><code class="language-json">{
+  "id": "dice-tray",
+  "title": "Dice Tray - An Example FVTT Module",
+  "description": "A simple module created as a demo for working in the Foundry Virtual Tabletop framework.",
+  "authors": [
+    {
+    "name": "Atropos"
+    }
+  ],
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "11"
+  }
+}</code></pre>
+<p>The above manifest file is sufficient for the module to be recognized, displayed, and enabled within Foundry VTT. The module would not <em>do anything</em> because we have not included any content - but this is a good place to start to make sure that your module is recognized by the system before advancing further.</p>
+<p class="note info"><strong>Hint:</strong> JSON files have very specific syntax requirements. Your JSON manifest file must be valid in order for your module to be recognized and loaded. Use the <a href="https://jsonlint.com/" rel="nofollow" target="_blank" title="JSON Lint">JSON Lint</a> tool to validate that your JSON file is correct if you encounter any issues.</p>
+<p>The manifest file can include many attributes, some of which are required while others are optional.</p>
+<section class="collapsible"><header class="collapsible-header" id="requirements">Required Manifest Attributes</header>
+<div class="collapsible-content">
+<dl>
+<dt>id</dt>
+<dd>
+<p>Choose a unique module identifier. This must be an all lower-case string with no special characters and should use hyphens (not underscores) to separate multiple terms. This name must match exactly with the name of your module directory.</p>
+</dd>
+<dt>title</dt>
+<dd>
+<p>Provide a human readable title for the module which is displayed as the visible name for the module in the Setup menu and elsewhere.</p>
+</dd>
+<dt>description</dt>
+<dd>
+<p>This field can contain a more lengthy description of the module. This text can be used to describe the functionality, list contact information, provide recommendations to contributors or testers, or any other information you feel is important to provide. This field can contain HTML to structure and style your text.</p>
+</dd>
+<dt>version</dt>
+<dd>
+<p>The module version number can be a number or a string which denotes the version of your module. When making changes to your module, incrementing the version number in your manifest file is used to signal to users that an update is available. We discuss some supported options for versioning in the <a href="/article/intro-development/" rel="nofollow" target="_blank" title="Introduction to Development">Introduction to Development</a> article.</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="collapsible"><header class="collapsible-header" id="options">Optional Manifest Attributes</header>
+<div class="collapsible-content">
+<dl>
+<dt>compatibility</dt>
+<dd>
+<p>the compatibility field is an object key for capturing the sub-fields which defines the limits of your module's compatibility based on Foundry Virtual Tabletop version. It contains the following subfields:</p>
+<dl>
+<dt>minimum</dt>
+<dd>The module will not function for versions earlier than this.</dd>
+<dt>verified</dt>
+<dd>The module has been verified to be compatible up to this version.</dd>
+<dt>maximum</dt>
+<dd>The module will not function for newer versions than this.</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>"compatibility": {
+    "minimum": 10,
+    "verified": "11",
+    "maximum": "11"
+  }</code></pre>
+<dl>
+<dt>esmodules</dt>
+<dd>
+<p>The preferred method for including Javascript with your project. This field allows you to define an array of JS files which use the newer ES6 modules specification. As with <code>scripts</code>, this should be declared as an array. These files are identified separately in the manifest so they may be correctly loaded as a module rather than a script.</p>
+</dd>
+<dt>scripts</dt>
+<dd>
+<p>A less common way of including Javascript with the increasing adoption of ESModules, this field allows you to define an array of JavaScript file paths which should be included whenever this module is being used. Each listed script path should be relative to the module root directory. All scripts which exist will be automatically included in the game session and loaded in their listed order.</p>
+</dd>
+<dt>styles</dt>
+<dd>
+<p>You can designate an array of CSS files which should be included in the game session whenever this module is used. Each listed stylesheet path should be relative to the module root directory. All stylesheets which exist will be automatically included in the game session and loaded in their listed order.</p>
+</dd>
+<dt>packs</dt>
+<dd>
+<p>Modules may come bundled with Compendium packs which include game content for various Document types. Compendium packs are defined as objects which have their own internal metadata structure. The <code>path</code> field is optional and the <code>system</code> field only needs to be filled out for system-specific packs like Actors and Items. For example:</p>
+<dl>
+<dt>ownership</dt>
+<dd>
+<p>Packs can have different levels of ownership/visibility depending on the user's role. You can set Assistant Gamemasters, Trusted Players, and Players to have either <code>OWNER</code> (can view and edit), <code>OBSERVER</code> (can view), or <code>NONE</code> (can't see) permissions.</p>
+</dd>
+</dl>
+  <pre><code class="language-json">"packs": [
+    {
+      "name": "pack-name",
+      "label": "Pack Title",
+      "system": "system-id",
+      "path": "./packs/desired-folder-name",
+      "type": "Item",
+      "ownership": {
+          "PLAYER": "NONE",
+          "TRUSTED": "OBSERVER"
+          "ASSISTANT": "OWNER",
+      },
+    }
+]</code></pre>
+<p class="note warning">Important: As of Version 10, Actor, Item, and Adventure compendium packs MUST define a system field.</p>
+</dd>
+<dt>packFolders</dt>
+</dl>
+<p>Compendium Packs can also be organized into Folders in the Compendium tab of the sidebar. You can define what Folders they should be in by default in the <code>module.json</code>.</p>
+<dl>
+<dd>
+<dl>
+<dt>name</dt>
+<dd>The name of the Folder.</dd>
+<dt>sorting</dt>
+<dd>How to sort the given Packs. Using <code>m</code> will sort it manually and <code>a</code> will sort alphabetically.</dd>
+<dt>packs</dt>
+<dd>The Packs from this Module that should be in this Folder.</dd>
+<dt>color</dt>
+<dd>The color of the Folder.</dd>
+<dt>folders</dt>
+<dd>An array of Folder objects with the same fields that should be within the parent Folder.</dd>
+</dl>
+<pre><code class="language-json">"packFolders": [
+  {
+    "name": "Classes",
+    "sorting": "m",
+    "packs": ["classes"],
+    "folders": [
+      {
+        "name": "Corebook",
+        "sorting": "a",
+        "color": "#ff0000",
+        "packs": ["barbarian"]
+      },
+      {
+        "name": "13 True Ways",
+        "sorting": "a",
+        "color": "#ff00ff",
+        "packs": ["chaosmage"]
+      }
+    ]
+  }
+]
+    </code></pre>
+</dd>
+<dt>relationships</dt>
+<dd>
+<p>Modules can require other modules, systems, or worlds be installed to allow their use. If a module has been installed with dependencies, but its dependencies are missing, it cannot be enabled. Dependencies within relationships are defined as an array of objects containing the following data:</p>
+<dl>
+<dt>id</dt>
+<dd>
+<p>Dependency entries require the <code>id</code> attribute. If only an <code>id</code> is provided, additional details about the module will be discovered from the Foundry VTT website listing.</p>
+</dd>
+<dt>type</dt>
+<dd>
+<p>The type attribute instructs FVTT that the dependency may be on a different type of package. By default dependencies are assumed to be a module, so if you want to depend on a system or world you should be explicit.</p>
+</dd>
+<dt>manifest</dt>
+<dd>
+<p>The manifest attribute provides an explicit manifest url to be used for downloading the dependency. If a manifest is not provided, the dependency package must exist in the Foundry website directory.</p>
+</dd>
+<dt>compatibility</dt>
+<dd>As above, the compatibility of a dependency can be defined, ensuring that the dependency will not be installed if it does not meet the defined requirements..</dd>
+</dl>
+<p>Example relationships structure:</p>
+<pre><code class="language-json">"relationships": {
+  "systems": [{
+    "id": "archmage",
+    "type": "system",
+    "manifest": "https://gitlab.com/asacolips-projects/foundry-mods/archmage/-/raw/1.5.0/system.json",
+    "compatibility": {
+      "verified": "1.5.0"
+    }
+  }],
+  "requires": [{
+    "id": "_chatcommands",
+    "type": "module",
+    "manifest": "https://github.com/League-of-Foundry-Developers/Chat-Commands-Lib/releases/download/1.2.0/module.json",
+    "compatibility": {
+      "verified": "1.2.0"
+    }
+  }]
+}</code></pre>
+</dd>
+<dt>languages</dt>
+<dd>
+<p>A module may designate an array of languages specifications that it supports by default. Each element in the languages array is an object which defines the language tag, label, and path to its localization file. Please see the @Article[Localization] documentation page for details on language entries provided by a module. For example:</p>
+<pre><code class="language-json">"languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+]
+</code></pre>
+</dd>
+<dt>system</dt>
+<dd>
+<p>An array of package names used as a restriction to prevent activation of a module for systems that the module does not support. For example, specifying <code>"system": ["dnd5e"]</code> will only allow the module to activated within Worlds which are running the <code>dnd5e</code> game system.</p>
+</dd>
+<dt>authors</dt>
+<dd>
+<p>An array listing each author as an object that can contain the keys <code>name</code>, <code>email</code>, <code>discord</code>, and <code>url</code>. For example:</p>
+<pre><code class="language-json">"authors": [
+    {
+      "name": "Atropos",
+      "discord": "Atropos#3814",
+      "email": "admin@foundryvtt.com",
+      "url": "https://foundryvtt.com"
+    }
+  ]
+  </code></pre>
+</dd>
+<dt>socket</dt>
+<dd>
+<p>A module may request for a specialized socket namespace to be provided which allows data messages to be passed between connected clients. If set to <code>true</code>, a socket event will be handled by the server with the event name <code>module.{name}</code>. This event name relays arbitrary data packets between the sending client and all other connected clients.</p>
+</dd>
+<dt>url</dt>
+<dd>
+<p>A public URL that links to the repository or documentation pages for the module. This link will be displayed for users to allow them to find more information about your system. If your module is hosted in version control like GitHub or GitLab, linking to the repository in this field is a good choice.</p>
+</dd>
+<dt>manifest</dt>
+<dd>
+<p>A stable URL that describes the latest release version of your manifest file. This URL is used for automatic system installation in the Foundry VTT setup screen. This manifest URL is consulted during the system update check to see whether a new version is available for download. It is important that this address remain stable, otherwise updates will not be detected.</p>
+</dd>
+<dt>download</dt>
+<dd>
+<p>A public URL that provides a zip archive of the module for the manifest version which points to it. The archive at this URL is retrieved during the installation or update process. If you are using version control for your package - it is recommended to manage download archives using the tags and releases features which are supported by most git repositories.</p>
+</dd>
+<dt>license</dt>
+<dd>
+<p>A path to a license file relative to the root module folder or a publicly accessible URL which contains the software license that applies to this package.</p>
+</dd>
+<dt>readme</dt>
+<dd>
+<p>A path to a read-me file relative to the root module folder or a publicly accessible URL which contains instructions or information about the package.</p>
+</dd>
+<dt>bugs</dt>
+<dd>
+<p>A publicly accessible URL where issues, suggestions, and bug reports may be filed.</p>
+</dd>
+<dt>changelog</dt>
+<dd>
+<p>A publicly accessible URL where update and release notes about the package may be found.</p>
+</dd>
+<dt>library</dt>
+<dd>
+<p>The library field is a boolean that indicates whether the package is a "library." A library module is a special type of module that is intended to be used only by other packages and developers.  Libraries do not present any user-facing features, but rather they provides functionality for other packages to utilize and rely upon.</p>
+<p>Setting this field to <code>true</code> provides some important benefits for library modules:</p>
+<ul>
+  <li>Ensures that library modules always load before non-library packages so that they are always ready when other packages call on them</li>
+  <li>Clarifies the intention of the module to serve as a library and allows it to be determined programmatically</li>
+  <li>Hides the module from certain third party package lists to avoid confusing users</li>
+</ul>
+<p>When omitted, the value of this field defaults to <code>false</code>, so modules that are not libraries do not need to explicitly set this value.</p>
+</dd>
+<dt>media</dt>
+<dd>An array of objects composed of a <code>type</code>, <code>url</code>, and <code>thumbnail</code> that can contain art that Foundry uses in places like the Setup screen for a Package's background image. For example:
+<pre><code class="language-json hljs">"media": [
+  {
+    "type": "setup",
+    "url": "modules/demon-queen-awakens/scenes/DemonQueenCover.webp",
+    "thumbnail": "modules/demon-queen-awakens/scenes/thumbs/the-valley-of-stone.webp"
+  }
+]
+    </code></pre>
+</dd>
+</dl>
+</div>
+</section>
+<h2 class="border" id="includes">Including JavaScript</h2>
+<p>For modules that want to expand or modify core software functionality you can include a JavaScript file (or ESModule) which can impact how Foundry VTT works. An ideal second step once you have populated your module manifest with the required fields is to create a "Hello World" script which is loaded when your module is active. Experiment with adding a script file to the <code>"scripts"</code> or <code>"esmodules"</code> attribute of the manifest. Suppose we create the JavaScript file in our example module <code>dice-tray/scripts/roller.js</code>. We would modify the <code>module.json</code> file as follows and the contents of our created JavaScript file will be automatically loaded and parsed by the browser when a game is loaded.</p>
+<pre><code class="language-json">"scripts": [
+  "scripts/roller.js"
+]
+</code></pre>
+<p>or if you're using an ESModule:</p>
+<pre><code class="language-json">"esmodules": [
+  "scripts/roller.js"
+]
+</code></pre>
+<p class="note info">Note that modules can only affect the game view itself - and not the Setup or Join screens for security reasons.</p>
+<p>The example below provides a very simple "Hello World" script which is designed to introduce how scripts are loaded and executed. Open the <strong>Developer Tools</strong> by pressing <code>F12</code> and consult the <strong>Console</strong> tab. Note that in the below example - the statements are logged at different points in time. Depending on what scope of data you need to operate on - you may want to condition execution of module code on certain events (called "hooks") which allow for module logic to interrupt, augment, or replace the default behavior of the VTT platform.</p>
+<pre><code class="language-javascript">console.log("Hello World! This code runs immediately when the file is loaded.");
+
+Hooks.on("init", function() {
+  console.log("This code runs once the Foundry VTT software begins its initialization workflow.");
+});
+
+Hooks.on("ready", function() {
+  console.log("This code runs once core initialization is ready and game data is available.");
+});
+</code></pre>
+<h2 class="border">Module Defined Sub-Types</h2>
+<p>As of Foundry Virtual Tabletop Version 11, it is possible for <a href="https://foundryvtt.com/article/module-sub-types/" rel="nofollow" target="_blank">Modules to extend the list of sub-types</a> available to certain Documents in much the same way that Systems can. <code>Actor</code>, <code>Item</code>, <code>JournalEntryPage</code>, <code>Cards</code>, and <code>Card</code> Documents can all have additional sub-types added in this way.</p>
+<p>Once a Module declares which sub-types it provides for which Documents, they will subsequently be available for use in the World by users who activate that Module, and will function in the same way that core or System-defined sub-types do, with additional, Module-specific data being available under the Document's <code>system</code> field.</p>
+<h2 class="border" id="more">Further Reading</h2>
+<p>As you delve further into the world of module development - the following topics may prove useful for a variety of tasks you wish to perform.</p>
+<ul>
+<li>The <a href="/api/classes/foundry.abstract.Document.html" rel="nofollow" target="_blank" title=" Document Class Pattern"> Document Class Pattern</a></li>
+<li>The <a href="/api/classes/foundry.Game.html" rel="nofollow" target="_blank" title=" Game Class"> Game Class</a></li>
+<li>The <a href="/api/classes/foundry.applications.api.ApplicationV2.html" rel="nofollow" target="_blank" title=" Application V2 Class"> ApplicationV2 Class</a></li>
+<li>The <a href="/api/classes/foundry.helpers.Hooks.html" rel="nofollow" target="_blank" title=" Hooks Event Framework"> Hooks Event Framework</a></li>
+<li>The <a href="/api/classes/foundry.canvas.Canvas.html" rel="nofollow" target="_blank" title=" Canvas Class"> Canvas Class</a></li>
+</ul>
+</article>
+
+
+        <!-- Secondary Content -->
+        
+        
+
+        <!-- Tertiary Content -->
+        
+        
+    </main>
+
+    <!-- Begin Main Footer Section -->
+    <footer class="body-container" id="main-footer">
+        <h4 id="footer-header">Foundry Virtual Tabletop</h4>
+<nav id="footer-links" class="flexrow">
+    <a href="/article/license" title="Software License">Software License</a>
+    <a href="/article/privacy-policy" title="Privacy Policy">Privacy Policy</a>
+    <a href="/article/terms-of-service" title="Privacy Policy">Terms of Service</a>
+    <a href="/article/partnerships" title="Partnerships">Partnerships</a>
+    <a href="/article/branding" title="Branding and Content Kit">Branding Guide</a>
+    <a href="/article/employment" title="Employment Opportunities">Employment Opportunities</a>
+    <a href="/contact-us/" title="Contact Us">Contact Us</a>
+</nav>
+<p id="copyright">Foundry Virtual Tabletop © Copyright 2026, Foundry Gaming, LLC. All rights reserved.</p>
+    </footer>
+
+    <!-- Background Bottom -->
+    <div id="background-bottom" class="background-image"></div>
+</body>
+</html>
+
+<!-- DEBUG INFO
+
+-->

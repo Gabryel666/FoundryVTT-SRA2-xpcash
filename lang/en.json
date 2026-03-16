@@ -28,6 +28,14 @@
             "CashCostVehicle": {
                 "Name": "Enable Cash Cost for Vehicles",
                 "Hint": ""
+            },
+            "SheetOpenSound": {
+                "Name": "Sheet Open Sound",
+                "Hint": "Select an audio file to play when a character sheet is opened."
+            },
+            "SheetCloseSound": {
+                "Name": "Sheet Close Sound",
+                "Hint": "Select an audio file to play when a character sheet is closed."
             }
         },
         "UI": {

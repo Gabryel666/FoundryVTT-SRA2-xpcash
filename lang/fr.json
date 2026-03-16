@@ -28,6 +28,14 @@
             "CashCostVehicle": {
                 "Name": "Coût en Cash pour les Véhicules / Drones",
                 "Hint": ""
+            },
+            "SheetOpenSound": {
+                "Name": "Son à l'ouverture",
+                "Hint": "Sélectionnez un fichier audio à jouer lors de l'ouverture d'une fiche de personnage."
+            },
+            "SheetCloseSound": {
+                "Name": "Son à la fermeture",
+                "Hint": "Sélectionnez un fichier audio à jouer lors de la fermeture d'une fiche de personnage."
             }
         },
         "UI": {

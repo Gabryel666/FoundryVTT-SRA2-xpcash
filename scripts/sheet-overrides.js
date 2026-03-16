@@ -11,6 +11,13 @@ export function setupSheetOverrides() {
         // Only inject the separate Cash field on Character sheets
         if (app.actor.type !== 'character') return;
 
+        // Play open sound if configured and not already played for this instance
+        const openSound = game.settings.get('sra2-xp-cash', 'sheetOpenSound');
+        if (openSound && !app.sra2XpAudioPlayed) {
+            AudioHelper.play({ src: openSound, volume: 1.0, autoplay: true }, false);
+            app.sra2XpAudioPlayed = true;
+        }
+
 
         // Remap the footer-cash div (which currently bounds to yens) to be our "XP" input
         const footerCash = html.find('.footer-cash');
@@ -37,6 +44,19 @@ export function setupSheetOverrides() {
         // Hide the original bulky Total Cost display as requested by the user
         html.find('.cost-label').hide();
         html.find('.price-value').hide();
+    });
+
+    Hooks.on('closeActorSheet', (app, html) => {
+        if (app.actor.type !== 'character') return;
+
+        // Reset the open audio flag
+        app.sra2XpAudioPlayed = false;
+
+        // Play close sound if configured
+        const closeSound = game.settings.get('sra2-xp-cash', 'sheetCloseSound');
+        if (closeSound) {
+            AudioHelper.play({ src: closeSound, volume: 1.0, autoplay: true }, false);
+        }
     });
 
     Hooks.on('renderItemSheet', (app, html, data) => {
