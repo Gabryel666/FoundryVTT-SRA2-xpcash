@@ -72,27 +72,29 @@ export function setupSheetOverrides() {
         if (!isItemCashEnabled(featType)) return;
 
         // The item sheet generally has a <select name="system.cost"> inside a form-group.
+        // Risk Reduction is often in the same form-group, so we must ONLY hide the select element!
         const costSelect = html.find('select[name="system.cost"]');
         if (costSelect.length) {
-            const costGroup = costSelect.closest('.form-group');
-            // Hide the native cost group completely since Cash manages it now
-            costGroup.hide();
+            costSelect.hide();
 
             const currentCashCost = app.item.getFlag('sra2-xp-cash', 'cost') || 0;
-            const label = game.i18n.localize('SRA2XPCash.UI.ItemCashCostLabel') || 'Coût en Cash';
 
-            const cashFormGroup = `
-                <div class="form-group">
-                    <label>${label}</label>
-                    <div class="form-fields">
-                        <input type="number" name="flags.sra2-xp-cash.cost" value="${currentCashCost}" />
-                        <span style="align-self: center; margin-left: 5px;">¥</span>
-                    </div>
-                </div>
+            // Try to find the associated label and rename it "Coût en Cash"
+            // We search for the label but avoid touching others like "Réduction de Risque"
+            const labels = costSelect.closest('.form-group').find('label');
+            labels.each(function () {
+                if ($(this).text().trim().toLowerCase().includes('coût')) {
+                    $(this).text(game.i18n.localize('SRA2XPCash.UI.ItemCashCostLabel') || 'Coût en Cash');
+                }
+            });
+
+            const cashInputHtml = `
+                <input type="number" name="flags.sra2-xp-cash.cost" value="${currentCashCost}" title="${game.i18n.localize('SRA2XPCash.UI.ItemCashCostLabel')}" style="max-width: 60px; text-align: right;" />
+                <span style="align-self: center; margin-left: 5px; margin-right: 15px;">¥</span>
             `;
 
-            // Insert after the existing formula/cost group
-            costGroup.after(cashFormGroup);
+            // Insert our input right where the select was
+            costSelect.after(cashInputHtml);
         }
     });
 
