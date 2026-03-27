@@ -12,7 +12,7 @@ export function setupSheetOverrides() {
         if (app.actor.type !== 'character') return;
 
         // Play open sound if configured and not already played for this instance
-        const openSound = game.settings.get('sra2-xp-cash', 'sheetOpenSound');
+        const openSound = game.settings.get('sra2-enhancements', 'sheetOpenSound');
         if (openSound && !app.sra2XpAudioPlayed) {
             AudioHelper.play({ src: openSound, volume: 1.0, autoplay: true }, false);
             app.sra2XpAudioPlayed = true;
@@ -30,11 +30,11 @@ export function setupSheetOverrides() {
             `);
 
             // Add the real Cash input bounded to proper module flag
-            const currentCash = app.actor.getFlag('sra2-xp-cash', 'cash') || 0;
+            const currentCash = app.actor.getFlag('sra2-enhancements', 'cash') || 0;
             const cashHtml = `
                 <div class="footer-actual-cash" style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-left: 15px; font-weight: bold; color: var(--light-blue); font-size: 0.8rem;">
                     <span class="yen-symbol">Cash : </span>
-                    <input type="number" name="flags.sra2-xp-cash.cash" value="${currentCash}" class="cash-input sra2-cash-mod-input" style="width:70px; text-align:right; border:none; border-bottom:1px solid var(--light-blue); background:transparent; color:var(--light-blue); font-weight:bold; font-size:0.8rem;" />
+                    <input type="number" name="flags.sra2-enhancements.cash" value="${currentCash}" class="cash-input sra2-cash-mod-input" style="width:70px; text-align:right; border:none; border-bottom:1px solid var(--light-blue); background:transparent; color:var(--light-blue); font-weight:bold; font-size:0.8rem;" />
                     <span class="yen-symbol">¥</span>
                 </div>
             `;
@@ -53,7 +53,7 @@ export function setupSheetOverrides() {
         app.sra2XpAudioPlayed = false;
 
         // Play close sound if configured
-        const closeSound = game.settings.get('sra2-xp-cash', 'sheetCloseSound');
+        const closeSound = game.settings.get('sra2-enhancements', 'sheetCloseSound');
         if (closeSound) {
             AudioHelper.play({ src: closeSound, volume: 1.0, autoplay: true }, false);
         }
@@ -71,30 +71,32 @@ export function setupSheetOverrides() {
         const featType = app.item.system?.featType;
         if (!isItemCashEnabled(featType)) return;
 
-        // The item sheet generally has a <select name="system.cost"> inside a form-group.
-        // Risk Reduction is often in the same form-group, so we must ONLY hide the select element!
-        const costSelect = html.find('select[name="system.cost"]');
-        if (costSelect.length) {
-            costSelect.hide();
+        // Ensure we hide the native cost select if the system still generates it
+        const generalSection = html.find('section[data-section-content="general"]');
+        if (generalSection.length) {
+            const costSelect = generalSection.find('select[name="system.cost"]');
+            if (costSelect.length) {
+                // Hide the whole form group containing the native cost
+                costSelect.closest('.form-group').hide();
+            }
 
-            const currentCashCost = app.item.getFlag('sra2-xp-cash', 'cost') || 0;
-
-            // Try to find the associated label and rename it "Coût en Cash"
-            // We search for the label but avoid touching others like "Réduction de Risque"
-            const labels = costSelect.closest('.form-group').find('label');
-            labels.each(function () {
-                if ($(this).text().trim().toLowerCase().includes('coût')) {
-                    $(this).text(game.i18n.localize('SRA2XPCash.UI.ItemCashCostLabel') || 'Coût en Cash');
-                }
-            });
-
-            const cashInputHtml = `
-                <input type="number" name="flags.sra2-xp-cash.cost" value="${currentCashCost}" title="${game.i18n.localize('SRA2XPCash.UI.ItemCashCostLabel')}" style="max-width: 60px; text-align: right;" />
-                <span style="align-self: center; margin-left: 5px; margin-right: 15px;">¥</span>
+            // Always inject our uniform Cash Cost field
+            const currentCashCost = app.item.getFlag('sra2-enhancements', 'cost') || 0;
+            const newGroupHtml = `
+                <div class="form-group cash-cost-group" style="background: rgba(255, 215, 0, 0.05); border-left: 3px solid gold; padding-left: 8px;">
+                    <label style="color: gold; text-shadow: 0 0 5px rgba(255,215,0,0.5);">${game.i18n.localize('SRA2XPCash.UI.ItemCashCostLabel') || 'Coût en Cash'}</label>
+                    <div style="display: flex; align-items: center;">
+                        <input type="number" name="flags.sra2-enhancements.cost" value="${currentCashCost}" title="${game.i18n.localize('SRA2XPCash.UI.ItemCashCostLabel')}" style="max-width: 60px; text-align: right; border-color: gold;" />
+                        <span style="align-self: center; margin-left: 5px; margin-right: 15px; color: gold; font-weight: bold;">¥</span>
+                    </div>
+                </div>
             `;
-
-            // Insert our input right where the select was
-            costSelect.after(cashInputHtml);
+            
+            // Insert it elegantly right after the rating group
+            const ratingGroup = generalSection.find('input[name="system.rating"]').closest('.form-group');
+            if (ratingGroup.length) {
+                ratingGroup.after(newGroupHtml);
+            } else { generalSection.prepend(newGroupHtml); }
         }
     });
 
@@ -103,16 +105,19 @@ export function setupSheetOverrides() {
         if (app.actor.type !== 'character') return;
 
         // Loop over feats in the sheet to append their cash cost if applicable
-        html.find('.feat-item').each(function () {
+        html.find('.feat-item, .skill-item').each(function () {
             const itemId = $(this).data('itemId');
             if (itemId) {
                 const item = app.actor.items.get(itemId);
                 if (item && isItemCashEnabled(item.system?.featType)) {
-                    const cashCost = item.getFlag('sra2-xp-cash', 'cost');
+                    const cashCost = item.getFlag('sra2-enhancements', 'cost');
                     if (cashCost) {
                         // For basic view (next to name or in a specific place)
-                        // In SRA2 sheet V2, there's `.advanced - cost` inside `.row.advanced - info`
-                        const advancedRow = $(this).next('.advanced-info');
+                        // In SRA2 sheet V2, there's `.advanced-cost` inside `.row.advanced-info`
+                        let advancedRow = $(this).next('.advanced-info');
+                        if (!advancedRow.length && $(this).closest('.cyberdeck-group').length) {
+                            advancedRow = $(this).closest('.cyberdeck-group').next('.advanced-info');
+                        }
 
                         // Hide the native XP cost elements since it costs Cash
                         $(this).find('.feat-cost').hide();
@@ -152,7 +157,7 @@ export function setupSheetOverrides() {
         if (item.type !== 'feat') return;
 
         if (isItemCashEnabled(item.system?.featType)) {
-            const cashCost = item.getFlag('sra2-xp-cash', 'cost');
+            const cashCost = item.getFlag('sra2-enhancements', 'cost');
             if (cashCost && cashCost > 0) {
                 const confirm = await Dialog.confirm({
                     title: game.i18n.localize("SRA2XPCash.UI.DeductCashTitle") || "Purchase Item",
@@ -161,8 +166,8 @@ export function setupSheetOverrides() {
                 });
 
                 if (confirm) {
-                    const currentCash = item.parent.getFlag('sra2-xp-cash', 'cash') || 0;
-                    await item.parent.setFlag('sra2-xp-cash', 'cash', currentCash - cashCost);
+                    const currentCash = item.parent.getFlag('sra2-enhancements', 'cash') || 0;
+                    await item.parent.setFlag('sra2-enhancements', 'cash', currentCash - cashCost);
                     ui.notifications.info(game.i18n.format("SRA2XPCash.UI.CashDeducted", { cost: cashCost }));
                 }
             }
