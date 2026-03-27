@@ -129,10 +129,6 @@ export function setupSheetOverrides() {
                         if (advancedRow.length) {
                             advancedRow.find('.advanced-cost').hide();
                             advancedRow.append(`<span class="advanced-cash-cost" style="margin-left: 10px; color: gold; opacity: 0.8; font-size: 0.75rem;">${cashCost} ¥</span>`);
-                        } else {
-                            // If not in advanced mode, we might append to .name-wrapper
-                            const nameWrapper = $(this).find('.name-wrapper');
-                            nameWrapper.append(`<span class="cash-badge" style="margin-left:auto; color:gold; font-size:0.75rem;">${cashCost} ¥</span>`);
                         }
                     }
                 }
